@@ -2,16 +2,22 @@
 import { ref } from "vue";
 import TextField from "../../components/ui/TextField.vue";
 import Button from "../../components/ui/Button.vue";
-import { useRouter } from "vue-router";
+import { useAuth } from "../../hooks/auth/useAuth";
+
+// hooks
+const { login, loading, error } = useAuth();
 
 // state
 const password = ref("");
 const email = ref("");
-const loading = ref(false);
+// const loading = ref(false);
 
 // handlers
 const submitForm = async () => {
-
+  await login({
+    email: email.value,
+    password: password.value
+  })
 }
 
 </script>
@@ -28,6 +34,7 @@ const submitForm = async () => {
         <div class="mb-6">
           <TextField type="password" border-style="dashed" v-model="password" placeholder="password" />
         </div>
+        {{ error }}
         <Button type="submit" :loading="loading">Login</Button>
       </form>
       <RouterLink to="/register"
