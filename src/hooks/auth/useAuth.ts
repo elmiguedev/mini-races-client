@@ -66,13 +66,13 @@ export const useAuth = () => {
   });
 
   const user = computed(() => {
-    return getUserSession();
+    return getUserSession()?.user;
   });
 
   return {
     isAuthenticated: isAuthenticated.value,
+    user: user.value,
     loading,
-    user,
     login,
     logout,
     error

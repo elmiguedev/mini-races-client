@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { useAuth } from '../../hooks/auth/useAuth';
+const { user } = useAuth();
+
+</script>
 <template>
   <div class="">
     <div class=" flex p-3 flex-row w-full items-center justify-center border-dashed border-black border-2 rounded-md">
@@ -17,9 +22,3 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
-// import { useUserSession } from '#imports';
-
-// const { user } = useUserSession();
-
-</script>
