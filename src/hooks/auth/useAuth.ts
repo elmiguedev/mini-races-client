@@ -51,9 +51,9 @@ export const useAuth = () => {
     } else {
       const data = await response.json();
       saveUserSession(data);
+      redirectToHome();
     }
     loading.value = false;
-    redirectToHome();
   }
 
   const logout = () => {
@@ -70,7 +70,7 @@ export const useAuth = () => {
   });
 
   return {
-    isAuthenticated,
+    isAuthenticated: isAuthenticated.value,
     loading,
     user,
     login,
