@@ -7,6 +7,7 @@ import RacesView from '../views/races/RacesView.vue'
 import RaceView from '../views/races/RaceView.vue'
 import AppLayout from '../views/layout/AppLayout.vue'
 import { useAuth } from '../hooks/auth/useAuth'
+import LogoutView from '../views/auth/LogoutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,7 @@ const router = createRouter({
     {
       path: '/', component: AppLayout, meta: { requiresAuth: true }, children: [
         { path: "/", name: "home", component: HomeView },
+        { path: "/logout", name: "logout", component: LogoutView },
         { path: "/admin", name: "admin", component: AdminView },
         { path: "/races", name: "races", component: RacesView },
         { path: "/races/:raceId", name: "race", component: RaceView }

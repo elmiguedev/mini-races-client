@@ -18,8 +18,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useUserSession } from '#imports';
+// import { useUserSession } from '#imports';
 
-const { user } = useUserSession();
+// const { user } = useUserSession();
 
 </script>
