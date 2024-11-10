@@ -69,12 +69,17 @@ export const useAuth = () => {
     return getUserSession()?.user;
   });
 
+  const token = computed(() => {
+    return getUserSession()?.token || "";
+  });
+
   return {
     isAuthenticated: isAuthenticated.value,
     user: user.value,
     loading,
     login,
     logout,
-    error
+    error,
+    token: token.value
   }
 }
