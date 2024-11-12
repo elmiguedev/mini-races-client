@@ -23,11 +23,8 @@ export const useRaceSocket = (raceId: string) => {
   const handleMessage = (event: any) => {
     const message = JSON.parse(event.data) as SocketMessage;
     switch (message.key) {
-      case "chat":
-        chatMessages.value.push({
-          message: message.data.message,
-          name: message.data.name
-        });
+      case "player_chat":
+        chatMessages.value.push(message.data);
         break;
 
       default:
@@ -41,8 +38,7 @@ export const useRaceSocket = (raceId: string) => {
 
   const sendChatMessage = (message: string) => {
     sendMessage({
-      key: 'chat', data: {
-        name: user.name,
+      key: 'player_chat', data: {
         message
       }
     });
