@@ -9,14 +9,14 @@ import { useRouter } from 'vue-router';
 // hooks and composables
 const router = useRouter();
 const raceId = router.currentRoute.value.params.raceId as string;
-const { connect, raceDetail, sendChatMessage, chatMessages, disconnect } = useRaceSocket(raceId);
+const { connect, raceDetail, sendChatMessage, chatMessages, disconnect, setReady } = useRaceSocket(raceId);
 
 // view state
 const showGame = ref(false);
 
 // handlers
 const handlePlayerReadyClick = () => {
-
+  setReady();
 }
 
 const handleChatBoxMessage = (message: string) => {
@@ -29,10 +29,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   disconnect();
-})
-
-watch(raceDetail, () => {
-  console.log("Race", raceDetail.value);
 })
 
 </script>

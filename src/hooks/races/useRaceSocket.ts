@@ -49,6 +49,12 @@ export const useRaceSocket = (raceId: string) => {
     });
   }
 
+  const setReady = () => {
+    sendMessage({
+      key: 'player_ready', data: {}
+    });
+  }
+
   const disconnect = () => {
     socket.value?.close();
   }
@@ -58,6 +64,7 @@ export const useRaceSocket = (raceId: string) => {
     chatMessages,
     connect,
     sendChatMessage,
-    disconnect
+    disconnect,
+    setReady
   }
 }
