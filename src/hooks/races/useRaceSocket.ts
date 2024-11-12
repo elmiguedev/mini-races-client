@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import type { ChatMessage } from "../../models/race/ChatMessage";
 import { useAuth } from "../auth/useAuth";
+import type { RaceDetail } from "@/models/race/RaceDetail";
 
 export interface SocketMessage {
   key: string;
@@ -9,7 +10,7 @@ export interface SocketMessage {
 
 export const useRaceSocket = (raceId: string) => {
   const socket = ref<WebSocket>();
-  const raceDetail = ref();
+  const raceDetail = ref<RaceDetail>();
   const chatMessages = ref<Array<ChatMessage>>([]);
   const { user, token } = useAuth();
 
@@ -25,6 +26,10 @@ export const useRaceSocket = (raceId: string) => {
     switch (message.key) {
       case "player_chat":
         chatMessages.value.push(message.data);
+        break;
+
+      case "race_status":
+        raceDetail.value = message.data;
         break;
 
       default:
@@ -44,10 +49,15 @@ export const useRaceSocket = (raceId: string) => {
     });
   }
 
+  const disconnect = () => {
+    socket.value?.close();
+  }
+
   return {
     raceDetail,
     chatMessages,
     connect,
-    sendChatMessage
+    sendChatMessage,
+    disconnect
   }
 }

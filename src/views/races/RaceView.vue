@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import ChatBox from '../../components/chat/ChatBox.vue';
 import Button from '../../components/ui/Button.vue';
-import Game from '../../components/game/Game.vue';
 import LobbyPlayer from '../../components/race/LobbyPlayer.vue';
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRaceSocket } from '../../hooks/races/useRaceSocket';
 import { useRouter } from 'vue-router';
 
 // hooks and composables
 const router = useRouter();
 const raceId = router.currentRoute.value.params.raceId as string;
-const { connect, raceDetail, sendChatMessage, chatMessages } = useRaceSocket(raceId);
+const { connect, raceDetail, sendChatMessage, chatMessages, disconnect } = useRaceSocket(raceId);
 
 // view state
 const showGame = ref(false);
@@ -26,6 +25,14 @@ const handleChatBoxMessage = (message: string) => {
 
 onMounted(() => {
   connect();
+})
+
+onBeforeUnmount(() => {
+  disconnect();
+})
+
+watch(raceDetail, () => {
+  console.log("Race", raceDetail.value);
 })
 
 </script>
