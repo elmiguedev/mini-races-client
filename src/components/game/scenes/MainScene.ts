@@ -6,6 +6,9 @@ export class MainScene extends Scene {
   }
 
   public create() {
-    this.add.text(20, 20, "MainScene");
+    this.add.text(20, 20, "MainScene", {
+      fontSize: "32px",
+      color: "#000000"
+    });
   }
 }

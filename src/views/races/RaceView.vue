@@ -2,6 +2,7 @@
 import ChatBox from '../../components/chat/ChatBox.vue';
 import Button from '../../components/ui/Button.vue';
 import LobbyPlayer from '../../components/race/LobbyPlayer.vue';
+import Game from '@/components/game/Game.vue';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRaceSocket } from '../../hooks/races/useRaceSocket';
 import { useRouter } from 'vue-router';
@@ -23,6 +24,12 @@ const handleChatBoxMessage = (message: string) => {
   sendChatMessage(message);
 }
 
+const checkGameReady = () => {
+  if (raceDetail?.value?.status === 'ready') {
+    showGame.value = true;
+  }
+}
+
 onMounted(() => {
   connect();
 })
@@ -30,6 +37,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   disconnect();
 })
+
+watch(raceDetail, () => {
+  checkGameReady();
+});
 
 </script>
 
@@ -45,7 +56,7 @@ onBeforeUnmount(() => {
       </div>
     </div>
     <div v-if="showGame">
-      <!-- <Game :race="race" /> -->
+      <Game />
     </div>
     <div v-if="!showGame">
       <ChatBox :messages="chatMessages" @send="handleChatBoxMessage" />
