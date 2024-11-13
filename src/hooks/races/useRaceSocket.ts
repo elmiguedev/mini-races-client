@@ -19,6 +19,7 @@ export class RaceSocketManager {
   }
 
   private socket: WebSocket | null = null;
+  private socketId: string | null = null;
   private playerChatListeners: any[] = [];
   private raceStatusListeners: any[] = [];
 
@@ -27,6 +28,10 @@ export class RaceSocketManager {
     this.socket.addEventListener("message", (event: any) => {
       this.handleMessage(event);
     });
+  }
+
+  public getId() {
+    return this.socketId;
   }
 
   private handleMessage(event: any) {
@@ -39,6 +44,11 @@ export class RaceSocketManager {
       case "race_status":
         this.notifyRaceStatus(message.data);
         break;
+
+      case "socket_id": {
+        this.socketId = message.data;
+        break
+      }
 
       default:
         break;
@@ -63,6 +73,10 @@ export class RaceSocketManager {
 
   public disconnect() {
     this.socket?.close();
+  }
+
+  public sendPlayerInGame() {
+    this.sendMessage({ key: "player_in_race", data: {} });
   }
 
   public addPlayerChatListener(listener: any) {
