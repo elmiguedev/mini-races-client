@@ -19,11 +19,8 @@ export class RaceSocketManager {
   }
 
   private socket: WebSocket | null = null;
-  private raceDetailListeners: any[] = [];
-  private chatMessageListeners: any[] = [];
-  public raceDetail: RaceDetail | undefined;
-  public chatMessages: Array<ChatMessage> = [];
-
+  private playerChatListeners: any[] = [];
+  private raceStatusListeners: any[] = [];
 
   public connect(raceId: string, token: string) {
     this.socket = new WebSocket('ws://localhost:3000/races/' + raceId + "?token=" + token);
@@ -36,13 +33,11 @@ export class RaceSocketManager {
     const message = JSON.parse(event.data) as SocketMessage;
     switch (message.key) {
       case "player_chat":
-        this.chatMessages.push(message.data);
-        this.notifyChatMessageChange();
+        this.notifyPlayerChat(message.data);
         break;
 
       case "race_status":
-        this.raceDetail = message.data;
-        this.notifyRaceDetailChange();
+        this.notifyRaceStatus(message.data);
         break;
 
       default:
@@ -70,23 +65,23 @@ export class RaceSocketManager {
     this.socket?.close();
   }
 
-  public addChatMessageListener(listener: any) {
-    this.chatMessageListeners.push(listener);
+  public addPlayerChatListener(listener: any) {
+    this.playerChatListeners.push(listener);
   }
 
   public addRaceDetailListener(listener: any) {
-    this.raceDetailListeners.push(listener);
+    this.raceStatusListeners.push(listener);
   }
 
-  public notifyChatMessageChange() {
-    this.chatMessageListeners.forEach((listener) => {
-      listener();
+  public notifyPlayerChat(message: ChatMessage) {
+    this.playerChatListeners.forEach((listener) => {
+      listener(message);
     });
   }
 
-  public notifyRaceDetailChange() {
-    this.raceDetailListeners.forEach((listener) => {
-      listener();
+  public notifyRaceStatus(race: RaceDetail) {
+    this.raceStatusListeners.forEach((listener) => {
+      listener(race);
     });
   }
 }
@@ -97,12 +92,12 @@ export const useRaceSocket = () => {
 
   const connect = (raceId: string, token: string) => {
     RaceSocketManager.getInstance().connect(raceId, token);
-    RaceSocketManager.getInstance().addChatMessageListener(() => {
-      chatMessages.value = RaceSocketManager.getInstance().chatMessages;
+    RaceSocketManager.getInstance().addPlayerChatListener((message: ChatMessage) => {
+      chatMessages.value.push(message);
     });
 
-    RaceSocketManager.getInstance().addRaceDetailListener(() => {
-      raceDetail.value = RaceSocketManager.getInstance().raceDetail;
+    RaceSocketManager.getInstance().addRaceDetailListener((data: RaceDetail) => {
+      raceDetail.value = data;
     });
   }
 
