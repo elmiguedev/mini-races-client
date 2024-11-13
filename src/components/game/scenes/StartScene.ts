@@ -1,8 +1,14 @@
+import { RaceSocketManager, useRaceSocket } from "@/hooks/races/useRaceSocket";
 import { Scene } from "phaser";
 
 export class StartScene extends Scene {
   constructor() {
     super("StartScene");
+
+    console.log()
+    console.log("IN RACE", RaceSocketManager.getInstance().raceDetail);
+    console.log()
+
   }
 
   public create() {

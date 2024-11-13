@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import TextField from '../ui/TextField.vue';
 import type { ChatMessage } from '../../models/race/ChatMessage';
 
 defineProps({

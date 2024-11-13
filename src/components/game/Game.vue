@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref, type PropType } from 'vue';
 import { StartScene } from './scenes/StartScene';
 import { MainScene } from './scenes/MainScene';
 
