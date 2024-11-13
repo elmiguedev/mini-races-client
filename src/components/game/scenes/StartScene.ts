@@ -11,6 +11,7 @@ export class StartScene extends Scene {
   private txt!: Phaser.GameObjects.Text;
   private players: Record<string, PlayerEntity> = {};
   private mainPlayer!: PlayerEntity;
+  private controls!: Phaser.Types.Input.Keyboard.CursorKeys;
 
   constructor() {
     super("StartScene");
@@ -30,6 +31,8 @@ export class StartScene extends Scene {
 
     this.add.image(0, 0, "map");
 
+    this.controls = this.input.keyboard!.createCursorKeys();
+
     RaceSocketManager.getInstance().addRaceDetailListener((data: RaceDetail) => {
       this.raceDetail = data;
       this.updateRaceDetail();
@@ -38,13 +41,29 @@ export class StartScene extends Scene {
     RaceSocketManager.getInstance().sendPlayerInGame();
   }
 
+  public update() {
+    if (!this.raceDetail) return;
+
+    if (this.mainPlayer) {
+      const moves = {
+        accelerate: this.controls.up?.isDown,
+        left: this.controls.left?.isDown,
+        right: this.controls.right?.isDown,
+      }
+      if (moves.accelerate || moves.left || moves.right) {
+        RaceSocketManager.getInstance().sendPlayerMove(moves);
+      }
+    }
+
+  }
+
   public updateRaceDetail() {
     this.txt.setText(JSON.stringify(this.raceDetail.players));
     this.updatePlayers();
   }
 
   private updatePlayers() {
-    if (!this.raceDetail) return;
+    if (!this.raceDetail?.players) return;
     Object.values(this.raceDetail.players).forEach((player) => {
       if (!this.players[player.socketId]) {
         this.players[player.socketId] = new PlayerEntity(this, player);

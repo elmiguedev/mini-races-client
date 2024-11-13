@@ -24,9 +24,18 @@ export class PlayerEntity {
 
   public setPlayerRaceInfo(playerRaceInfo: PlayerRaceInfo) {
     this.playerData.playerRaceInfo = playerRaceInfo;
+    this.updateBody();
   }
 
   public startFollow() {
     this.scene.cameras.main.startFollow(this.body);
+  }
+
+  private updateBody() {
+    this.body.setPosition(
+      this.playerData.playerRaceInfo.position.x,
+      this.playerData.playerRaceInfo.position.y
+    );
+    this.body.setRotation(this.playerData.playerRaceInfo.angle);
   }
 }
