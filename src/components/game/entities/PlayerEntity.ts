@@ -21,20 +21,27 @@ export class PlayerEntity {
       this.playerData.playerRaceInfo.position.x,
       this.playerData.playerRaceInfo.position.y,
       "car"
-    )
+    );
+    this.body.setRotation(this.playerData.playerRaceInfo.angle);
   }
 
   createInfo() {
     this.txtPlayerInfo = this.scene.add.text(
       this.playerData.playerRaceInfo.position.x,
-      this.playerData.playerRaceInfo.position.y,
-      this.playerData.name,
+      this.playerData.playerRaceInfo.position.y - 80,
+      `
+      ${this.playerData.name} 
+      (x: ${this.playerData.playerRaceInfo.position.x.toFixed(0)}, y: ${this.playerData.playerRaceInfo.position.y.toFixed(0)})
+      Position: ${this.playerData.playerRaceInfo.racePosition}
+      Checkpoint: ${this.playerData.playerRaceInfo.currentCheckpoint}
+      Laps: ${this.playerData.playerRaceInfo.currentLap}
+      `,
       {
         color: "#00000",
         fontSize: "16px",
         fontFamily: "Consolas",
       }
-    );
+    ).setOrigin(0.5);
   }
 
   public setPlayerRaceInfo(playerRaceInfo: PlayerRaceInfo) {
@@ -56,7 +63,7 @@ export class PlayerEntity {
     this.txtPlayerInfo.setPosition(
       this.playerData.playerRaceInfo.position.x,
       this.playerData.playerRaceInfo.position.y - 80
-    ).setOrigin(0.5);
+    )
   }
 
   public startFollow() {

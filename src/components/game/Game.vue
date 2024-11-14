@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref, type PropType } from 'vue';
 import { StartScene } from './scenes/StartScene';
 import { MainScene } from './scenes/MainScene';
+import { RaceHud } from './hud/RaceHud';
 
 const game = ref();
 
@@ -18,7 +19,8 @@ onMounted(() => {
     },
     scene: [
       StartScene,
-      MainScene
+      MainScene,
+      RaceHud
     ]
   });
 })

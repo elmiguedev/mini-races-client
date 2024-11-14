@@ -88,6 +88,9 @@ export class RaceSocketManager {
     this.sendMessage({ key: "player_move", data: moves });
   }
 
+  public sendPlayerRunning() {
+    this.sendMessage({ key: "player_running", data: {} });
+  }
 
   public addPlayerChatListener(listener: any) {
     this.playerChatListeners.push(listener);

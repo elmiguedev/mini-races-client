@@ -4,6 +4,7 @@ import type { RaceDetail } from "../../../models/race/RaceDetail";
 import { PlayerEntity } from "../entities/PlayerEntity";
 import CarPng from "../../../assets/img/car.png";
 import MapPng from "../../../assets/img/map.png";
+import type { RaceHud } from "../hud/RaceHud";
 
 export class StartScene extends Scene {
   private raceDetail!: RaceDetail;
@@ -12,6 +13,7 @@ export class StartScene extends Scene {
   private mainPlayer!: PlayerEntity;
   private controls!: Phaser.Types.Input.Keyboard.CursorKeys;
   private checkpoints: Phaser.GameObjects.Rectangle[] = [];
+  private raceHud!: RaceHud;
 
   constructor() {
     super("StartScene");
@@ -40,12 +42,13 @@ export class StartScene extends Scene {
     })
 
     RaceSocketManager.getInstance().sendPlayerInGame();
+    this.createRaceHud()
   }
 
   public update() {
     if (!this.raceDetail) return;
 
-    if (this.mainPlayer) {
+    if (this.mainPlayer && this.raceDetail.status === "running") {
       const moves = {
         accelerate: this.controls.up?.isDown,
         left: this.controls.left?.isDown,
@@ -64,7 +67,7 @@ export class StartScene extends Scene {
   }
 
   private updatePlayers() {
-    if (!this.raceDetail?.players) return;
+    // if (!this.raceDetail?.players) return;
     Object.values(this.raceDetail.players).forEach((player) => {
       if (!this.players[player.socketId]) {
         this.players[player.socketId] = new PlayerEntity(this, player);
@@ -90,6 +93,15 @@ export class StartScene extends Scene {
       ).setOrigin(0);
       this.checkpoints.push(c);
     })
+  }
+
+  private createRaceHud() {
+    this.scene.run("RaceHud");
+    this.raceHud = this.scene.get("RaceHud") as RaceHud;
+    this.raceHud.onCountdownEnd = () => {
+      console.log("GO")
+      RaceSocketManager.getInstance().sendPlayerRunning();
+    }
   }
 
 }
