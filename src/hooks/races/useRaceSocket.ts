@@ -10,7 +10,10 @@ export interface SocketMessage {
 
 export class RaceSocketManager {
   private static instance: RaceSocketManager;
-  private constructor() { }
+  private constructor() {
+    this.playerChatListeners = [];
+    this.raceStatusListeners = [];
+  }
   public static getInstance() {
     if (!RaceSocketManager.instance) {
       RaceSocketManager.instance = new RaceSocketManager();
@@ -72,6 +75,8 @@ export class RaceSocketManager {
   }
 
   public disconnect() {
+    this.playerChatListeners = [];
+    this.raceStatusListeners = [];
     this.socket?.close();
   }
 

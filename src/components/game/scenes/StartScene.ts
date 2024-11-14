@@ -1,6 +1,5 @@
 import { RaceSocketManager, useRaceSocket } from "@/hooks/races/useRaceSocket";
 import { Scene } from "phaser";
-import type { ChatMessage } from "../../../models/race/ChatMessage";
 import type { RaceDetail } from "../../../models/race/RaceDetail";
 import { PlayerEntity } from "../entities/PlayerEntity";
 import CarPng from "../../../assets/img/car.png";
@@ -12,6 +11,7 @@ export class StartScene extends Scene {
   private players: Record<string, PlayerEntity> = {};
   private mainPlayer!: PlayerEntity;
   private controls!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private checkpoints: Phaser.GameObjects.Rectangle[] = [];
 
   constructor() {
     super("StartScene");
@@ -29,12 +29,13 @@ export class StartScene extends Scene {
       color: "#000000"
     });
 
-    this.add.image(0, 0, "map");
+    this.add.image(0, 0, "map").setOrigin(0);
 
     this.controls = this.input.keyboard!.createCursorKeys();
 
     RaceSocketManager.getInstance().addRaceDetailListener((data: RaceDetail) => {
       this.raceDetail = data;
+      this.createCheckpoints();
       this.updateRaceDetail();
     })
 
@@ -74,6 +75,20 @@ export class StartScene extends Scene {
       } else {
         this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
       }
+    })
+  }
+
+  private createCheckpoints() {
+    if (this.checkpoints.length > 0) return;
+    this.raceDetail.checkpoints.forEach((checkpoint) => {
+      const c = this.add.rectangle(
+        checkpoint.x,
+        checkpoint.y,
+        checkpoint.width,
+        checkpoint.height,
+        0xff0000
+      ).setOrigin(0);
+      this.checkpoints.push(c);
     })
   }
 
