@@ -3,7 +3,7 @@ import type { ChatMessage } from "../domain/race/ChatMessage";
 import type { RaceDetail } from "../domain/race/RaceDetail";
 import { SocketMessageKeys } from "../utils/SocketMessageKeys";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || "localhost:3000";
+const SERVER_URL = import.meta.env.SERVER_URL || "localhost:3000";
 
 export interface SocketMessage {
   key: string;
