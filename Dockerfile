@@ -18,10 +18,6 @@ COPY tsconfig.json ./
 COPY tsconfig.node.json ./
 COPY tsconfig.app.json ./
 
-# Definir argumentos para las variables de entorno
-ARG VITE_API_URL
-ENV VITE_API_URL=${VITE_API_URL}
-
 # Instalar dependencias
 RUN pnpm install
 
