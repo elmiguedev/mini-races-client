@@ -6,7 +6,6 @@ import LobbyPlayer from '../../../components/race/LobbyPlayer.vue';
 import Game from '@/components/game/Game.vue';
 import { useRaceView } from './hooks/useRaceView';
 
-// hooks and composables
 const {
   raceDetail,
   chatMessages,
@@ -17,7 +16,6 @@ const {
   joinRace,
   leaveRace
 } = useRaceView();
-
 
 onMounted(() => {
   joinRace();
