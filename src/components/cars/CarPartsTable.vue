@@ -29,11 +29,10 @@
   </table>
 </template>
 <script setup lang="ts">
-import { CarPart } from '../../server/core/domain/car/CarPart';
 
 defineProps({
   parts: {
-    type: Array<CarPart>,
+    type: Array<any>,
     required: true
   }
 })
@@ -44,7 +43,7 @@ const formatDate = (date: Date) => {
   return new Date(date).toLocaleString();
 }
 
-const handleSelectClick = (part: CarPart) => {
+const handleSelectClick = (part: any) => {
   emit('select', part);
 }
 

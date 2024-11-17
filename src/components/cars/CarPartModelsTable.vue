@@ -31,11 +31,10 @@
   </table>
 </template>
 <script setup lang="ts">
-import { CarPartModel } from '../../server/core/domain/car/CarPartModel';
 
 defineProps({
   models: {
-    type: Array<CarPartModel>,
+    type: Array<any>,
     required: true
   }
 })
@@ -46,7 +45,7 @@ const formatDate = (date: Date) => {
   return new Date(date).toLocaleString();
 }
 
-const handleBuyClick = (model: CarPartModel) => {
+const handleBuyClick = (model: any) => {
   emit('buy', model);
 }
 

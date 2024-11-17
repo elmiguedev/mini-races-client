@@ -17,11 +17,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { PropType } from 'vue';
-import type { PlayerData } from '../server/core/domain/race/PlayerData';
+import type { Player } from '@/core/domain/race/Player';
+import type { PropType } from 'vue';
+
 
 defineProps({
-  player: Object as PropType<PlayerData>,
+  player: Object as PropType<Player>,
 })
 
 </script>
