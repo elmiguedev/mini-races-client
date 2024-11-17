@@ -1,8 +1,9 @@
 import { onMounted, ref } from "vue"
 import { useAuth } from "../auth/useAuth";
+import { API_URL } from "@/core/utils/Constants";
 
 export const usePost = (url: string) => {
-  const baseUrl = "http://localhost:3000"; // TODO: env var
+  const baseUrl = API_URL; // TODO: env var
   const fetchUrl = `${baseUrl}${url}`
   const { logout, token } = useAuth();
   const error = ref("");

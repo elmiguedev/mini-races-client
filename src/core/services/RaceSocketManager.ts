@@ -1,9 +1,8 @@
 import type { ErrorMessage } from "../domain/error/ErrorMessage";
 import type { ChatMessage } from "../domain/race/ChatMessage";
 import type { RaceDetail } from "../domain/race/RaceDetail";
+import { API_URL } from "../utils/Constants";
 import { SocketMessageKeys } from "../utils/SocketMessageKeys";
-
-const SERVER_URL = import.meta.env.VITE_API_URL || "localhost:3000";
 
 export interface SocketMessage {
   key: string;
@@ -30,7 +29,7 @@ export class RaceSocketManager {
   private errorListener: any[] = [];
 
   public connect(raceId: string, token: string) {
-    this.socket = new WebSocket(`ws://${SERVER_URL}/races/${raceId}?token=${token}`);
+    this.socket = new WebSocket(`ws://${API_URL}/races/${raceId}?token=${token}`);
     this.socket.addEventListener("message", (event: any) => {
       this.handleMessage(event);
     });
