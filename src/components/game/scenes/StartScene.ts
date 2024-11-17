@@ -1,10 +1,14 @@
-import { RaceSocketManager, useRaceSocket } from "@/hooks/races/useRaceSocket";
 import { Scene } from "phaser";
-import type { RaceDetail } from "../../../models/race/RaceDetail";
+import type { RaceDetail } from "../../../core/domain/race/RaceDetail";
 import { PlayerEntity } from "../entities/PlayerEntity";
 import CarPng from "../../../assets/img/car.png";
 import MapPng from "../../../assets/img/map.png";
 import type { RaceHud } from "../hud/RaceHud";
+import { SendPlayerInRace } from "@/core/actions/race/SendPlayerInRace";
+import { SubscribeRaceStatus } from "@/core/actions/race/SubscribeRaceStatus";
+import { SendPlayerMove } from "@/core/actions/race/SendPlayerMove";
+import { SendPlayerRunning } from "@/core/actions/race/SendPlayerRunning";
+import { GetSocketId } from "@/core/actions/race/GetSocketId";
 
 export class StartScene extends Scene {
   private raceDetail!: RaceDetail;
@@ -32,16 +36,16 @@ export class StartScene extends Scene {
     });
 
     this.add.image(0, 0, "map").setOrigin(0);
-
     this.controls = this.input.keyboard!.createCursorKeys();
 
-    RaceSocketManager.getInstance().addRaceDetailListener((data: RaceDetail) => {
-      this.raceDetail = data;
-      this.createCheckpoints();
-      this.updateRaceDetail();
+    SubscribeRaceStatus({
+      callback: (raceDetail) => {
+        this.raceDetail = raceDetail;
+        this.createCheckpoints();
+        this.updateRaceDetail();
+      }
     })
-
-    RaceSocketManager.getInstance().sendPlayerInGame();
+    SendPlayerInRace();
     this.createRaceHud()
   }
 
@@ -55,7 +59,7 @@ export class StartScene extends Scene {
         right: this.controls.right?.isDown,
       }
       if (moves.accelerate || moves.left || moves.right) {
-        RaceSocketManager.getInstance().sendPlayerMove(moves);
+        SendPlayerMove(moves);
       }
     }
 
@@ -71,7 +75,7 @@ export class StartScene extends Scene {
     Object.values(this.raceDetail.players).forEach((player) => {
       if (!this.players[player.socketId]) {
         this.players[player.socketId] = new PlayerEntity(this, player);
-        if (player.socketId === RaceSocketManager.getInstance().getId()) {
+        if (player.socketId === GetSocketId()) {
           this.mainPlayer = this.players[player.socketId];
           this.mainPlayer.startFollow();
         }
@@ -100,7 +104,7 @@ export class StartScene extends Scene {
     this.raceHud = this.scene.get("RaceHud") as RaceHud;
     this.raceHud.onCountdownEnd = () => {
       console.log("GO")
-      RaceSocketManager.getInstance().sendPlayerRunning();
+      SendPlayerRunning();
     }
   }
 

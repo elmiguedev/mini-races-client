@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
-import type { LoginRequest } from "../../models/auth/LoginRequest";
-import type { LoginResponse } from "../../models/auth/LoginResponse";
+import type { LoginRequest } from "../../core/domain/auth/LoginRequest";
+import type { LoginResponse } from "../../core/domain/auth/LoginResponse";
 import { useRouter } from "vue-router";
 
 export const useAuth = () => {

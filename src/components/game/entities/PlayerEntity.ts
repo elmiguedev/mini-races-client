@@ -1,6 +1,6 @@
 import type { Scene } from "phaser";
-import type { Player } from "../../../models/race/Player";
-import type { PlayerRaceInfo } from "../../../models/race/PlayerRaceInfo";
+import type { Player } from "../../../core/domain/race/Player";
+import type { PlayerRaceInfo } from "../../../core/domain/race/PlayerRaceInfo";
 
 export class PlayerEntity {
   private scene: Scene;

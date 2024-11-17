@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import type { Race } from '../../models/race/Race';
+import type { Race } from '../../core/domain/race/Race';
 import Button from '../ui/Button.vue';
 
 // props

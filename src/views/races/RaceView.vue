@@ -4,27 +4,35 @@ import Button from '../../components/ui/Button.vue';
 import LobbyPlayer from '../../components/race/LobbyPlayer.vue';
 import Game from '@/components/game/Game.vue';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { RaceSocketManager, useRaceSocket } from '../../hooks/races/useRaceSocket';
 import { useRouter } from 'vue-router';
 import { useAuth } from '@/hooks/auth/useAuth';
+import { SendPlayerChat } from '@/core/actions/race/SendPlayerChat';
+import { JoinRace } from '@/core/actions/race/JoinRace';
+import { LeaveRace } from '@/core/actions/race/LeaveRace';
+import { SendPlayerReady } from '@/core/actions/race/SendPlayerReady';
+import { SubscribeChatMessages } from '@/core/actions/race/SubscribeChatMessages';
+import type { ChatMessage } from '@/core/domain/race/ChatMessage';
+import type { RaceDetail } from '@/core/domain/race/RaceDetail';
+import { SubscribeRaceStatus } from '@/core/actions/race/SubscribeRaceStatus';
 
 // hooks and composables
 const { token } = useAuth();
 const router = useRouter();
 const raceId = router.currentRoute.value.params.raceId as string;
+const chatMessages = ref<Array<ChatMessage>>([]);
+const raceDetail = ref<RaceDetail>();
 
-const { connect, raceDetail, sendChatMessage, disconnect, sendPlayerReady, chatMessages } = useRaceSocket();
 
 // view state
 const showGame = ref(false);
 
 // handlers
 const handlePlayerReadyClick = () => {
-  sendPlayerReady();
+  SendPlayerReady();
 }
 
 const handleChatBoxMessage = (message: string) => {
-  sendChatMessage(message);
+  SendPlayerChat(message);
 }
 
 const checkGameReady = () => {
@@ -34,11 +42,25 @@ const checkGameReady = () => {
 }
 
 onMounted(() => {
-  connect(raceId, token);
+
+  SubscribeChatMessages({
+    callback: (message: ChatMessage) => {
+      chatMessages.value.push(message);
+    }
+  });
+  SubscribeRaceStatus({
+    callback: (race: RaceDetail) => {
+      raceDetail.value = race;
+    }
+  })
+  JoinRace({
+    raceId,
+    token
+  });
 })
 
 onBeforeUnmount(() => {
-  disconnect();
+  LeaveRace();
 })
 
 watch(raceDetail, () => {

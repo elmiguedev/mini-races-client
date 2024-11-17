@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { ChatMessage } from '../../models/race/ChatMessage';
+import type { ChatMessage } from '../../core/domain/race/ChatMessage';
 
 defineProps({
   messages: Array<ChatMessage>,
