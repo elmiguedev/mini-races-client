@@ -13,6 +13,7 @@ COPY package.json ./
 COPY vite.config.ts ./
 COPY src ./src
 COPY public ./public
+COPY index.html ./index.html
 
 # Definir argumentos para las variables de entorno
 ARG VITE_SERVER_URL
