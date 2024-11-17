@@ -3,11 +3,11 @@ import HomeView from '../views/home/HomeView.vue'
 import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
 import AdminView from '../views/admin/AdminView.vue'
-import RacesView from '../views/races/RacesView.vue'
-import RaceView from '../views/races/RaceView.vue'
 import AppLayout from '../views/layout/AppLayout.vue'
 import { useAuth } from '../hooks/auth/useAuth'
 import LogoutView from '../views/auth/LogoutView.vue'
+import RaceView from '@/views/races/race/RaceView.vue'
+import RacesView from '@/views/races/racelist/RacesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

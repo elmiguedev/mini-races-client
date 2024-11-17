@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import RaceList from '../../components/race/RaceList.vue';
-import Button from '../../components/ui/Button.vue';
-import { useGetRaces } from '../../hooks/races/useGetRaces';
-import { useCreateRace } from '../../hooks/races/useCreateRace';
+import { useCreateRace } from '@/hooks/races/useCreateRace';
+import { useGetRaces } from '@/hooks/races/useGetRaces';
 import { useRouter } from 'vue-router';
+import Button from '@/components/ui/Button.vue';
+import RaceList from '@/components/race/RaceList.vue';
 
 const router = useRouter();
 const { races, refresh } = useGetRaces();
