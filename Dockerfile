@@ -19,8 +19,8 @@ COPY tsconfig.node.json ./
 COPY tsconfig.app.json ./
 
 # Definir argumentos para las variables de entorno
-ARG VITE_SERVER_URL
-ENV VITE_SERVER_URL=${VITE_SERVER_URL}
+ARG SERVER_URL
+ENV SERVER_URL=${SERVER_URL}
 
 # Instalar dependencias
 RUN pnpm install
