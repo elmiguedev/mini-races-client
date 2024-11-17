@@ -30,9 +30,6 @@ FROM nginx:stable-alpine as production-stage
 # Copiar el build generado al directorio predeterminado de Nginx
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Configuración de Nginx (opcional)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Exponer el puerto 80
 EXPOSE 80
 
