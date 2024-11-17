@@ -10,7 +10,7 @@ WORKDIR /app
 # Copiar los archivos del proyecto
 COPY pnpm-lock.yaml ./
 COPY package.json ./
-COPY vite.config.js ./
+COPY vite.config.ts ./
 COPY src ./src
 COPY public ./public
 
