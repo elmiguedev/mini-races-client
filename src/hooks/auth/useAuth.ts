@@ -2,9 +2,10 @@ import { computed, ref } from "vue";
 import type { LoginRequest } from "../../core/domain/auth/LoginRequest";
 import type { LoginResponse } from "../../core/domain/auth/LoginResponse";
 import { useRouter } from "vue-router";
+import { API_URL } from "@/core/utils/Constants";
 
 export const useAuth = () => {
-  const baseUrl = "http://localhost:3000"; //process.env.VUE_APP_BASE_URL;
+  const baseUrl = API_URL
   const loading = ref(false);
   const error = ref();
   const router = useRouter();
