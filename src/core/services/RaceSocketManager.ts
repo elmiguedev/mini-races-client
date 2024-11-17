@@ -1,5 +1,7 @@
+import type { ErrorMessage } from "../domain/error/ErrorMessage";
 import type { ChatMessage } from "../domain/race/ChatMessage";
 import type { RaceDetail } from "../domain/race/RaceDetail";
+import { SocketMessageKeys } from "../utils/SocketMessageKeys";
 
 export interface SocketMessage {
   key: string;
@@ -23,6 +25,7 @@ export class RaceSocketManager {
   private socketId: string | null = null;
   private playerChatListeners: any[] = [];
   private raceStatusListeners: any[] = [];
+  private errorListener: any[] = [];
 
   public connect(raceId: string, token: string) {
     this.socket = new WebSocket('ws://localhost:3000/races/' + raceId + "?token=" + token);
@@ -53,6 +56,10 @@ export class RaceSocketManager {
     this.raceStatusListeners.push(listener);
   }
 
+  public addErrorListener(listener: any) {
+    this.errorListener.push(listener);
+  }
+
 
   private notifyPlayerChat(message: ChatMessage) {
     this.playerChatListeners.forEach((listener) => {
@@ -66,16 +73,27 @@ export class RaceSocketManager {
     });
   }
 
+  private notifyError(error: ErrorMessage) {
+    this.errorListener.forEach((listener) => {
+      listener(error);
+    })
+  }
+
   private handleMessage(event: any) {
     const message = JSON.parse(event.data) as SocketMessage;
     switch (message.key) {
-      case "player_chat":
+      case SocketMessageKeys.PLAYER_CHAT:
         this.notifyPlayerChat(message.data);
         break;
 
-      case "race_status":
+      case SocketMessageKeys.RACE_STATUS:
         this.notifyRaceStatus(message.data);
         break;
+
+      case SocketMessageKeys.ERROR:
+        this.notifyError(message.data);
+        break;
+
 
       case "socket_id": {
         this.socketId = message.data;

@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/auth/useAuth'
 import LogoutView from '../views/auth/LogoutView.vue'
 import RaceView from '@/views/races/race/RaceView.vue'
 import RacesView from '@/views/races/racelist/RacesView.vue'
+import NotFoundView from '@/views/error/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,7 @@ const router = createRouter({
         { path: "/races/:raceId", name: "race", component: RaceView }
       ]
     },
+    { path: '/:pathMatch(.*)*', name: 'notFound', component: NotFoundView }
   ],
 })
 
@@ -42,6 +44,5 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-
 
 export default router

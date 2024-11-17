@@ -3,6 +3,7 @@ import { LeaveRace } from "@/core/actions/race/LeaveRace";
 import { SendPlayerChat } from "@/core/actions/race/SendPlayerChat";
 import { SendPlayerReady } from "@/core/actions/race/SendPlayerReady";
 import { SubscribeChatMessages } from "@/core/actions/race/SubscribeChatMessages";
+import { SubscribeError } from "@/core/actions/race/SubscribeError";
 import { SubscribeRaceStatus } from "@/core/actions/race/SubscribeRaceStatus";
 import type { ChatMessage } from "@/core/domain/race/ChatMessage";
 import type { RaceDetail } from "@/core/domain/race/RaceDetail";
@@ -11,7 +12,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 export const useRaceView = () => {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const router = useRouter();
   const raceId = router.currentRoute.value.params.raceId as string;
 
@@ -37,6 +38,16 @@ export const useRaceView = () => {
         raceDetail.value = race;
       }
     })
+    SubscribeError({
+      callback: (error) => {
+        if (error.code === 404) {
+          router.push({ name: "notFound" })
+        }
+        if (error.code === 401) {
+          logout();
+        }
+      }
+    });
     JoinRace({
       raceId,
       token
