@@ -4,7 +4,7 @@ import { API_URL } from "@/core/utils/Constants";
 
 export const usePost = (url: string) => {
   const baseUrl = API_URL; // TODO: env var
-  const fetchUrl = `https://${baseUrl}${url}`
+  const fetchUrl = `http://${baseUrl}${url}`
   const { logout, token } = useAuth();
   const error = ref("");
   const loading = ref(false);

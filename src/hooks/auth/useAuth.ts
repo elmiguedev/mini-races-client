@@ -32,7 +32,7 @@ export const useAuth = () => {
   }
 
   const login = async (params: LoginRequest) => {
-    const url = `https://${baseUrl}/auth/login`;
+    const url = `http://${baseUrl}/auth/login`;
 
     loading.value = true;
     const response = await fetch(url, {
