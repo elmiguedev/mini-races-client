@@ -71,10 +71,17 @@ export class PlayerEntity {
   }
 
   private updateBody() {
-    this.body.setPosition(
-      this.playerData.playerRaceInfo.position.x,
-      this.playerData.playerRaceInfo.position.y
-    );
-    this.body.setRotation(this.playerData.playerRaceInfo.angle);
+    // this.body.setPosition(
+    //   this.playerData.playerRaceInfo.position.x,
+    //   this.playerData.playerRaceInfo.position.y
+    // );
+    // this.body.setRotation(this.playerData.playerRaceInfo.angle);
+    this.scene.add.tween({
+      targets: this.body,
+      x: this.playerData.playerRaceInfo.position.x,
+      y: this.playerData.playerRaceInfo.position.y,
+      rotation: this.playerData.playerRaceInfo.angle,
+      duration: 100
+    });
   }
 }
