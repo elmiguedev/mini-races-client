@@ -8,15 +8,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copiar los archivos del proyecto
-COPY pnpm-lock.yaml ./
-COPY package.json ./
-COPY vite.config.ts ./
-COPY src ./src
-COPY public ./public
-COPY index.html ./
-COPY tsconfig.json ./
-COPY tsconfig.node.json ./
-COPY tsconfig.app.json ./
+COPY . .
 
 # Instalar dependencias
 RUN pnpm install
