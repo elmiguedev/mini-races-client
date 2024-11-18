@@ -4,7 +4,7 @@ import { API_URL } from "@/core/utils/Constants";
 
 export const useGet = (url: string) => {
   const baseUrl = API_URL
-  const fetchUrl = `${baseUrl}${url}`
+  const fetchUrl = `https://${baseUrl}${url}`
   const { logout, token } = useAuth();
   const data = ref();
   const error = ref("");
