@@ -4,7 +4,7 @@ import type { PlayerRaceInfo } from "../../../core/domain/race/PlayerRaceInfo";
 
 export class PlayerEntity {
   private scene: Scene;
-  private body!: Phaser.GameObjects.Sprite;
+  public body!: Phaser.GameObjects.Sprite;
   private playerData: Player;
   private txtPlayerInfo!: Phaser.GameObjects.Text;
 
@@ -44,9 +44,9 @@ export class PlayerEntity {
     ).setOrigin(0.5);
   }
 
-  public setPlayerRaceInfo(playerRaceInfo: PlayerRaceInfo) {
+  public setPlayerRaceInfo(playerRaceInfo: PlayerRaceInfo, isMain?: boolean) {
     this.playerData.playerRaceInfo = playerRaceInfo;
-    this.updateBody();
+    this.updateBody(isMain);
     this.updateInfo();
   }
 
@@ -70,11 +70,25 @@ export class PlayerEntity {
     this.scene.cameras.main.startFollow(this.body);
   }
 
-  private updateBody() {
-    this.body.setPosition(
-      this.playerData.playerRaceInfo.position.x,
-      this.playerData.playerRaceInfo.position.y
-    );
+  private updateBody(isMain?: boolean) {
+    // this.body.setPosition(
+    //   this.playerData.playerRaceInfo.position.x,
+    //   this.playerData.playerRaceInfo.position.y
+    // );
+    if (isMain) {
+      this.body.setPosition(
+        this.playerData.playerRaceInfo.position.x,
+        this.playerData.playerRaceInfo.position.y
+      );
+    } else {
+
+      this.scene.add.tween({
+        targets: this.body,
+        x: this.playerData.playerRaceInfo.position.x,
+        y: this.playerData.playerRaceInfo.position.y,
+        duration: 100
+      });
+    }
     this.body.setRotation(this.playerData.playerRaceInfo.angle);
   }
 }

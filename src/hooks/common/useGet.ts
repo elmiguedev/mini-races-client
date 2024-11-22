@@ -1,10 +1,10 @@
 import { onMounted, ref } from "vue"
 import { useAuth } from "../auth/useAuth";
-import { API_URL } from "@/core/utils/Constants";
+import { API_URL } from "../../core/utils/Constants";
 
 export const useGet = (url: string) => {
   const baseUrl = API_URL
-  const fetchUrl = `http://${baseUrl}${url}`
+  const fetchUrl = `${baseUrl}${url}`
   const { logout, token } = useAuth();
   const data = ref();
   const error = ref("");

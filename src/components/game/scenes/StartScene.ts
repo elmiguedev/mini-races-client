@@ -9,6 +9,7 @@ import { SubscribeRaceStatus } from "@/core/actions/race/SubscribeRaceStatus";
 import { SendPlayerMove } from "@/core/actions/race/SendPlayerMove";
 import { SendPlayerRunning } from "@/core/actions/race/SendPlayerRunning";
 import { GetSocketId } from "@/core/actions/race/GetSocketId";
+import type { Player } from "../../../core/domain/race/Player";
 
 export class StartScene extends Scene {
   private raceDetail!: RaceDetail;
@@ -60,6 +61,7 @@ export class StartScene extends Scene {
       }
       if (moves.accelerate || moves.left || moves.right) {
         SendPlayerMove(moves);
+        this.updateMainPlayer(moves);
       }
     }
 
@@ -80,9 +82,61 @@ export class StartScene extends Scene {
           this.mainPlayer.startFollow();
         }
       } else {
-        this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
+        if (this.players[player.socketId] === this.mainPlayer) {
+          // this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo, true);
+          this.correctLocalPlayerPosition(player);
+        } else {
+          this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
+
+        }
       }
     })
+  }
+
+  public correctLocalPlayerPosition(data: Player) {
+    const distance = Phaser.Math.Distance.Between(
+      this.mainPlayer.body.x,
+      this.mainPlayer.body.y,
+      data.playerRaceInfo.position.x,
+      data.playerRaceInfo.position.y
+    );
+
+    if (distance > 50) {
+      // Gran corrección: ajustá instantáneamente
+      this.mainPlayer.body.setPosition(
+        data.playerRaceInfo.position.x,
+        data.playerRaceInfo.position.y
+      );
+      this.mainPlayer.body.setRotation(data.playerRaceInfo.angle);
+    } else {
+      // Corrección pequeña: interpolación
+      this.add.tween({
+        targets: this.mainPlayer.body,
+        x: data.playerRaceInfo.position.x,
+        y: data.playerRaceInfo.position.y,
+        duration: 50,
+      });
+    }
+
+    // Ajustar rotación
+    this.mainPlayer.body.setRotation(data.playerRaceInfo.angle);
+  }
+
+  private updateMainPlayer(moves: any) {
+    if (moves.left) {
+      this.mainPlayer.body.setRotation(this.mainPlayer.body.rotation - 0.05);
+    }
+    if (moves.right) {
+      this.mainPlayer.body.setRotation(this.mainPlayer.body.rotation + 0.05);
+    }
+    if (moves.accelerate) {
+      const dx = Math.cos(this.mainPlayer.body.rotation);
+      const dy = Math.sin(this.mainPlayer.body.rotation);
+      this.mainPlayer.body.setPosition(
+        this.mainPlayer.body.x + 5 * dx,
+        this.mainPlayer.body.y + 5 * dy
+      )
+    }
   }
 
   private createCheckpoints() {
