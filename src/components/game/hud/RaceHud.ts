@@ -1,5 +1,7 @@
 import { Scene } from "phaser";
 
+const COUNTDOUWN_TIME = 2;
+
 export class RaceHud extends Scene {
 
   private txtCountdown!: Phaser.GameObjects.Text
@@ -19,7 +21,7 @@ export class RaceHud extends Scene {
     const x = this.game.canvas.width / 2;
     const y = this.game.canvas.height / 2;
 
-    this.txtCountdown = this.add.text(x, y, "5", {
+    this.txtCountdown = this.add.text(x, y, String(COUNTDOUWN_TIME), {
       fontSize: "42px",
       color: "#000000",
       fontFamily: "Consolas"
@@ -27,7 +29,7 @@ export class RaceHud extends Scene {
   }
 
   public startCountdown() {
-    this.txtCountdown.setText("5");
+    this.txtCountdown.setText(String(COUNTDOUWN_TIME));
     const timer = setInterval(() => {
       this.txtCountdown.setText((Number(this.txtCountdown.text) - 1).toString());
       if (Number(this.txtCountdown.text) === 0) {

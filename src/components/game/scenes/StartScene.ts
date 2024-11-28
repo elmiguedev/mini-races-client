@@ -42,7 +42,7 @@ export class StartScene extends Scene {
     SubscribeRaceStatus({
       callback: (raceDetail) => {
         this.raceDetail = raceDetail;
-        this.createCheckpoints();
+        // this.createCheckpoints(); // SACARLO DE ACA
         this.updateRaceDetail();
       }
     })
@@ -50,7 +50,7 @@ export class StartScene extends Scene {
     this.createRaceHud()
   }
 
-  public update() {
+  public update(delta: number) {
     if (!this.raceDetail) return;
 
     if (this.mainPlayer && this.raceDetail.status === "running") {
@@ -61,19 +61,30 @@ export class StartScene extends Scene {
       }
       if (moves.accelerate || moves.left || moves.right) {
         SendPlayerMove(moves);
-        this.updateMainPlayer(moves);
+        this.mainPlayer.addMove(moves);
+        // this.updateMainPlayer(moves);
       }
+
+      // Object.values(this.players).forEach((player) => {
+      //   player.updateBody();
+      // })
+
+      this.mainPlayer.move();
     }
+
+
+
+    // TODO: cambiar a otra funcion
+
 
   }
 
   public updateRaceDetail() {
-    this.txt.setText(JSON.stringify(this.raceDetail.players));
     this.updatePlayers();
   }
 
   private updatePlayers() {
-    // if (!this.raceDetail?.players) return;
+    if (!this.raceDetail?.players) return;
     Object.values(this.raceDetail.players).forEach((player) => {
       if (!this.players[player.socketId]) {
         this.players[player.socketId] = new PlayerEntity(this, player);
@@ -83,11 +94,11 @@ export class StartScene extends Scene {
         }
       } else {
         if (this.players[player.socketId] === this.mainPlayer) {
-          // this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo, true);
-          this.correctLocalPlayerPosition(player);
+          this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
+          // this.players[player.socketId].fixPlayerPosition();
         } else {
           this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
-
+          this.players[player.socketId].updatePlayer();
         }
       }
     })
@@ -102,6 +113,7 @@ export class StartScene extends Scene {
     );
 
     if (distance > 50) {
+      console.log("AJUSTA")
       // Gran corrección: ajustá instantáneamente
       this.mainPlayer.body.setPosition(
         data.playerRaceInfo.position.x,
@@ -109,7 +121,7 @@ export class StartScene extends Scene {
       );
       this.mainPlayer.body.setRotation(data.playerRaceInfo.angle);
     } else {
-      // Corrección pequeña: interpolación
+      //Corrección pequeña: interpolación
       this.add.tween({
         targets: this.mainPlayer.body,
         x: data.playerRaceInfo.position.x,
@@ -124,19 +136,16 @@ export class StartScene extends Scene {
 
   private updateMainPlayer(moves: any) {
     if (moves.left) {
-      this.mainPlayer.body.setRotation(this.mainPlayer.body.rotation - 0.05);
+      this.mainPlayer.turnLeft();
     }
     if (moves.right) {
-      this.mainPlayer.body.setRotation(this.mainPlayer.body.rotation + 0.05);
+      this.mainPlayer.turnRight()
     }
     if (moves.accelerate) {
-      const dx = Math.cos(this.mainPlayer.body.rotation);
-      const dy = Math.sin(this.mainPlayer.body.rotation);
-      this.mainPlayer.body.setPosition(
-        this.mainPlayer.body.x + 5 * dx,
-        this.mainPlayer.body.y + 5 * dy
-      )
+      this.mainPlayer.accelerate();
     }
+    this.mainPlayer.fixPlayerPosition();
+
   }
 
   private createCheckpoints() {

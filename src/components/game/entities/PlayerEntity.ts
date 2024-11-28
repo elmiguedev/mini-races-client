@@ -5,14 +5,18 @@ import type { PlayerRaceInfo } from "../../../core/domain/race/PlayerRaceInfo";
 export class PlayerEntity {
   private scene: Scene;
   public body!: Phaser.GameObjects.Sprite;
-  private playerData: Player;
+  public playerData: Player;
   private txtPlayerInfo!: Phaser.GameObjects.Text;
+  private serverBody!: Phaser.GameObjects.Rectangle;
+  private moveBuffer: any[] = [];
+
 
   constructor(scene: Scene, player: Player) {
     this.playerData = player;
     this.scene = scene;
 
     this.createBody();
+    this.createServerBody();
     this.createInfo();
   }
 
@@ -22,7 +26,19 @@ export class PlayerEntity {
       this.playerData.playerRaceInfo.position.y,
       "car"
     );
+    this.body.setOrigin(0.5);
     this.body.setRotation(this.playerData.playerRaceInfo.angle);
+  }
+
+  createServerBody() {
+    this.serverBody = this.scene.add.rectangle(
+      this.playerData.playerRaceInfo.position.x,
+      this.playerData.playerRaceInfo.position.y,
+      32,
+      32,
+      0xff0000,
+      0.3
+    );
   }
 
   createInfo() {
@@ -44,10 +60,60 @@ export class PlayerEntity {
     ).setOrigin(0.5);
   }
 
+  // Behavior methods
+  // ---------------------------
+
+  public addMove(move: any) {
+    this.moveBuffer.push(move);
+  }
+
+  public move() {
+    const move = this.moveBuffer.shift();
+    if (move) {
+      if (move.left) this.turnLeft();
+      if (move.right) this.turnRight();
+      if (move.accelerate) this.accelerate();
+    }
+  }
+
+  public accelerate() {
+    const radians = this.body.rotation;
+    const dx = Math.cos(radians);
+    const dy = Math.sin(radians);
+    this.body.x += 5 * dx;
+    this.body.y += 5 * dy;
+    this.updateInfo();
+  }
+
+  public turnLeft() {
+    this.body.rotation -= 0.05;
+    // this.body.rotation = Phaser.Math.Angle.Wrap(this.body.rotation);
+    this.updateInfo();
+  }
+
+  public turnRight() {
+    this.body.rotation += 0.05;
+    // this.body.rotation = Phaser.Math.Angle.Wrap(this.body.rotation);
+    this.updateInfo();
+  }
+
+  public updatePlayer() {
+    this.updateBody();
+    this.updateInfo();
+  }
+
   public setPlayerRaceInfo(playerRaceInfo: PlayerRaceInfo, isMain?: boolean) {
     this.playerData.playerRaceInfo = playerRaceInfo;
-    this.updateBody(isMain);
+
     this.updateInfo();
+    this.updateServerBody();
+  }
+
+  public setPlayerPosition(x: number, y: number, angle: number) {
+    this.playerData.playerRaceInfo.position.x = x;
+    this.playerData.playerRaceInfo.position.y = y;
+    this.playerData.playerRaceInfo.angle = angle;
+
   }
 
   public updateInfo() {
@@ -66,29 +132,40 @@ export class PlayerEntity {
     )
   }
 
+  public updateServerBody() {
+    this.serverBody.setPosition(
+      this.playerData.playerRaceInfo.position.x,
+      this.playerData.playerRaceInfo.position.y
+    );
+    this.serverBody.setRotation(this.playerData.playerRaceInfo.angle);
+  }
   public startFollow() {
     this.scene.cameras.main.startFollow(this.body);
   }
 
-  private updateBody(isMain?: boolean) {
-    // this.body.setPosition(
-    //   this.playerData.playerRaceInfo.position.x,
-    //   this.playerData.playerRaceInfo.position.y
-    // );
-    if (isMain) {
-      this.body.setPosition(
-        this.playerData.playerRaceInfo.position.x,
-        this.playerData.playerRaceInfo.position.y
-      );
-    } else {
+  public updateBody() {
+    this.body.rotation = Phaser.Math.Angle.Wrap(this.playerData.playerRaceInfo.angle);
+    this.scene.add.tween({
+      targets: this.body,
+      x: this.playerData.playerRaceInfo.position.x,
+      y: this.playerData.playerRaceInfo.position.y,
+      duration: 100
+    })
+  }
 
-      this.scene.add.tween({
-        targets: this.body,
-        x: this.playerData.playerRaceInfo.position.x,
-        y: this.playerData.playerRaceInfo.position.y,
-        duration: 100
-      });
+  public fixPlayerPosition() {
+    const MAX_DISTANCE = 150;
+    const distance = Phaser.Math.Distance.Between(
+      this.body.x,
+      this.body.y,
+      this.playerData.playerRaceInfo.position.x,
+      this.playerData.playerRaceInfo.position.y
+    );
+
+    if (distance > MAX_DISTANCE) {
+      // this.updateBody();
+      this.body.setPosition(this.playerData.playerRaceInfo.position.x, this.playerData.playerRaceInfo.position.y);
+      this.body.setRotation(this.playerData.playerRaceInfo.angle);
     }
-    this.body.setRotation(this.playerData.playerRaceInfo.angle);
   }
 }
