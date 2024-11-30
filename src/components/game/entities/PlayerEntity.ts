@@ -74,6 +74,8 @@ export class PlayerEntity {
       if (move.right) this.turnRight();
       if (move.accelerate) this.accelerate();
     }
+
+
   }
 
   public accelerate() {
@@ -107,6 +109,9 @@ export class PlayerEntity {
 
     this.updateInfo();
     this.updateServerBody();
+
+    this.fixPlayerPosition();
+
   }
 
   public setPlayerPosition(x: number, y: number, angle: number) {
