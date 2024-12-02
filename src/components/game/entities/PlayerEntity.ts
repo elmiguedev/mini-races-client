@@ -158,6 +158,11 @@ export class PlayerEntity {
     })
   }
 
+  public updateBodyHard() {
+    this.body.rotation = Phaser.Math.Angle.Wrap(this.playerData.playerRaceInfo.angle);
+    this.body.setPosition(this.playerData.playerRaceInfo.position.x, this.playerData.playerRaceInfo.position.y);
+  }
+
   public fixPlayerPosition() {
     const MAX_DISTANCE = 150;
     const distance = Phaser.Math.Distance.Between(

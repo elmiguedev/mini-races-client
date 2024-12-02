@@ -61,15 +61,15 @@ export class StartScene extends Scene {
       }
       if (moves.accelerate || moves.left || moves.right) {
         SendPlayerMove(moves);
-        this.mainPlayer.addMove(moves);
+        // this.mainPlayer.addMove(moves);
         // this.updateMainPlayer(moves);
       }
 
-      // Object.values(this.players).forEach((player) => {
-      //   player.updateBody();
-      // })
+      Object.values(this.players).forEach((player) => {
+        player.updateBodyHard();
+      })
 
-      this.mainPlayer.move();
+      // this.mainPlayer.move();
     }
 
 
@@ -98,7 +98,7 @@ export class StartScene extends Scene {
           // this.players[player.socketId].fixPlayerPosition();
         } else {
           this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
-          this.players[player.socketId].updatePlayer();
+          // this.players[player.socketId].updatePlayer();
         }
       }
     })
