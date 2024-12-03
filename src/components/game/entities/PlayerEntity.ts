@@ -2,6 +2,9 @@ import type { Scene } from "phaser";
 import type { Player } from "../../../core/domain/race/Player";
 import type { PlayerRaceInfo } from "../../../core/domain/race/PlayerRaceInfo";
 
+const UPDATE_BODY_TIME = 50;
+const SHOW_SERVER_BODY = true;
+
 export class PlayerEntity {
   private scene: Scene;
   public body!: Phaser.GameObjects.Sprite;
@@ -39,6 +42,7 @@ export class PlayerEntity {
       0xff0000,
       0.3
     );
+    this.serverBody.setVisible(SHOW_SERVER_BODY)
   }
 
   createInfo() {
@@ -154,7 +158,7 @@ export class PlayerEntity {
       targets: this.body,
       x: this.playerData.playerRaceInfo.position.x,
       y: this.playerData.playerRaceInfo.position.y,
-      duration: 100
+      duration: UPDATE_BODY_TIME
     })
   }
 
