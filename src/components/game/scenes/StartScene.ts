@@ -96,6 +96,7 @@ export class StartScene extends Scene {
         if (this.players[player.socketId] === this.mainPlayer) {
           this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
           // this.players[player.socketId].fixPlayerPosition();
+          this.players[player.socketId].updatePlayer(); // SACAR SI HAY PREDICTION
         } else {
           this.players[player.socketId].setPlayerRaceInfo(player.playerRaceInfo);
           this.players[player.socketId].updatePlayer();
