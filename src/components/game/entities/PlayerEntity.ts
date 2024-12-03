@@ -3,7 +3,7 @@ import type { Player } from "../../../core/domain/race/Player";
 import type { PlayerRaceInfo } from "../../../core/domain/race/PlayerRaceInfo";
 
 const UPDATE_BODY_TIME = 50;
-const SHOW_SERVER_BODY = true;
+const SHOW_SERVER_BODY = false;
 
 export class PlayerEntity {
   private scene: Scene;
