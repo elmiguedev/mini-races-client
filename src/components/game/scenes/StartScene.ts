@@ -61,7 +61,7 @@ export class StartScene extends Scene {
       }
       if (moves.accelerate || moves.left || moves.right) {
         SendPlayerMove(moves);
-        this.mainPlayer.addMove(moves);
+        // this.mainPlayer.addMove(moves);
         // this.updateMainPlayer(moves);
       }
 
@@ -69,7 +69,7 @@ export class StartScene extends Scene {
       //   player.updateBody();
       // })
 
-      this.mainPlayer.move();
+      // this.mainPlayer.move();
     }
 
 
