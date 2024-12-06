@@ -8,7 +8,7 @@ import NavHeader from './components/NavHeader.vue';
 
 
 <template>
-  <div class="px-40 font-mono">
+  <div class="px-40">
     <NavHeader />
     <UserHeader />
     <div class="pt-10">
