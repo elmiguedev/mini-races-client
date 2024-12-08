@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import TextField from "../../components/ui/TextField.vue";
-import PaperTextField from "@/components/paperui/PaperTextField.vue";
-import PaperButton from "@/components/paperui/PaperButton.vue";
+import PaperTextField from "@/components/ui/TextField.vue";
+import PaperButton from "@/components/ui/Button.vue";
 import { useAuth } from "../../hooks/auth/useAuth";
 
 // hooks

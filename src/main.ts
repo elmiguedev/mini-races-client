@@ -1,6 +1,5 @@
+import './assets/css/sketchy/bootstrap.css'
 import './assets/main.css'
-import "./components/paperui/PaperBase.css";
-import "./components/paperui/PaperExtension.css";
 
 import { createApp } from 'vue'
 import App from './App.vue'

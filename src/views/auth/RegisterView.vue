@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import PaperTextField from "@/components/paperui/PaperTextField.vue";
-import PaperButton from "@/components/paperui/PaperButton.vue";
+import PaperTextField from "@/components/ui/TextField.vue";
+import PaperButton from "@/components/ui/Button.vue";
 
 // state
 const password = ref("");

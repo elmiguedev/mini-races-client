@@ -4,8 +4,8 @@ const { user } = useAuth();
 
 </script>
 <template>
-  <div class="">
-    <div class=" flex p-3 flex-row w-full items-center justify-center border-dashed border-black border-2 rounded-md">
+  <div class="card bg-light border-dashed border-3">
+    <div class=" flex p-3 flex-row w-full items-center justify-center">
       <!-- user name -->
       <div class="flex items-center space-x-4 mr-auto">
         <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
