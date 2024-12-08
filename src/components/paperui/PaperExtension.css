@@ -1,0 +1,51 @@
+/* PaperExtension.css */
+
+/* Sobreescribir primary en todos los componentes */
+.paper-btn.btn-primary,
+.paper-alert.alert-primary,
+.paper-card.card-primary,
+.paper-badge.badge-primary {
+  background-color: #333;
+  color: #fff;
+}
+
+.paper-btn.btn-primary:disabled,
+.paper-alert.alert-primary:disabled,
+.paper-card.card-primary:disabled,
+.paper-badge.badge-primary:disabled {
+  background-color: #333;
+  color: #fff;
+  opacity: 0.5;
+}
+
+.paper-btn.btn-primary:disabled:hover,
+.paper-alert.alert-primary:disabled:hover,
+.paper-card.card-primary:disabled:hover,
+.paper-badge.badge-primary:disabled:hover {
+  background-color: #333;
+  color: #fff;
+  opacity: 0.5;
+}
+
+.paper-btn.btn-primary:disabled:active,
+.paper-alert.alert-primary:disabled:active,
+.paper-card.card-primary:disabled:active,
+.paper-badge.badge-primary:disabled:active {
+  background-color: #333;
+  color: #fff;
+  opacity: 0.5;
+}
+
+.paper-btn.btn-primary:disabled:focus,
+.paper-alert.alert-primary:disabled:focus,
+.paper-card.card-primary:disabled:focus,
+.paper-badge.badge-primary:disabled:focus {
+  background-color: #333;
+  color: #fff;
+  opacity: 0.5;
+}
+
+/* Eliminar subrayado en enlaces */
+.paper-link {
+  text-decoration: none;
+}

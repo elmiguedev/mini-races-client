@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import TextField from "../../components/ui/TextField.vue";
-import Button from "../../components/ui/Button.vue";
-import { useRouter } from "vue-router";
+
+import PaperTextField from "@/components/paperui/PaperTextField.vue";
+import PaperButton from "@/components/paperui/PaperButton.vue";
 
 // state
 const password = ref("");
@@ -17,24 +17,26 @@ const submitForm = async () => {
 </script>
 <template>
   <div class="flex items-center justify-center min-h-96 max-h-screen bg-white">
-    <div class="w-full max-w-md p-8">
-      <h1 class="text-3xl font-bold text-black text-center mb-6 font-mono">
+    <div class="w-full max-w-md p-8 flex flex-col text-center">
+      <h1 class="text-3xl font-bold text-black text-center mb-6">
         Register
       </h1>
       <form @submit.prevent="submitForm">
-        <div class="mb-4">
-          <TextField v-model="email" border-style="dashed" placeholder="email" />
+        <div class="mb-2">
+          <PaperTextField v-model="email" placeholder="email" />
         </div>
-        <div class="mb-6">
-          <TextField type="password" v-model="password" border-style="dashed" placeholder="password" />
+        <div class="mb-2">
+          <PaperTextField type="password" v-model="password" placeholder="password" />
         </div>
-        <Button :loading="loading" type="submit">Create user</Button>
+        <!-- {{ error }} -->
+        <PaperButton :loading="loading" type="submit" variant="primary" block>Register</PaperButton>
       </form>
-      <RouterLink to="/login"
-        class="flex w-full text-center justify-center items-center mt-4 cursor-pointer decoration-solid underline decoration-black"
-        :class="{ 'font-bold text-gray-800': $route.path === '/login' }">
-        Login
-      </RouterLink>
+      <div class="pt-4">
+        <RouterLink to="/login"
+          class="focus:outline-none text-black cursor-pointer decoration-solid underline decoration-black">
+          Login
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>
