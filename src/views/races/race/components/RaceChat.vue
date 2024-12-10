@@ -1,4 +1,22 @@
-// FloatingChatButton.vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const showChat = ref(false);
+const messages = ref<string[]>([]);
+const newMessage = ref('');
+
+const toggleChat = () => {
+  showChat.value = !showChat.value;
+}
+
+const sendMessage = () => {
+  messages.value.push(`${newMessage.value}`);
+  newMessage.value = '';
+}
+
+
+</script>
+
 <template>
   <div class="floating-chat-button">
     <button @click="toggleChat" class="btn btn-primary">
@@ -21,29 +39,14 @@
 
       <!-- input -->
       <div class="">
-        <input class="form-control" v-model="newMessage" type="text" placeholder="Escribe un mensaje...">
-        <button @click="sendMessage" class="btn btn-primary">Enviar</button>
+        <input class="form-control" v-model="newMessage" type="text" placeholder="Escribe un mensaje..."
+          @keydown.enter="sendMessage">
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
 
-const showChat = ref(false);
-const messages = ref<string[]>([]);
-const newMessage = ref('');
-
-const toggleChat = () => {
-  showChat.value = !showChat.value;
-}
-
-const sendMessage = () => {
-  messages.value.push(`${newMessage.value}`);
-  newMessage.value = '';
-}
-</script>
 
 <style scoped>
 .floating-chat-button {
