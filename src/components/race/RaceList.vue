@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import type { Race } from '../../core/domain/race/Race';
-import Button from '../ui/Button.vue';
+import RaceRow from './RaceRow.vue';
 
 // props
 defineProps({
@@ -15,38 +15,15 @@ defineProps({
 const emit = defineEmits(['join']);
 
 // handlers
-const handleJoinClick = (id: string) => {
+const handleRaceJoin = (id: string) => {
   emit('join', id);
-}
-
-const formatDate = (date: Date) => {
-  return new Date(date).toLocaleString();
-}
-
-const getPlayersCount = (race: Race) => {
-  return `${race.playersCount}/${race.maxPlayers}`;
 }
 
 </script>
 <template>
-  <table class="w-full rounded-md">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Created At</th>
-        <th>Players</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="race in races">
-        <td>{{ race.id }}</td>
-        <td>{{ formatDate(race.createdAt) }}</td>
-        <td>{{ getPlayersCount(race) }}</td>
-        <td>
-          <Button @click="handleJoinClick(race.id)">join</Button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="flex flex-col">
+    <div v-for="race in races">
+      <RaceRow :race="race" @join="handleRaceJoin" />
+    </div>
+  </div>
 </template>

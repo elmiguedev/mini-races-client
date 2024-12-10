@@ -8,7 +8,7 @@ import { SubscribeRaceStatus } from "@/core/actions/race/SubscribeRaceStatus";
 import type { ChatMessage } from "@/core/domain/race/ChatMessage";
 import type { RaceDetail } from "@/core/domain/race/RaceDetail";
 import { useAuth } from "@/hooks/auth/useAuth";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export const useRaceView = () => {
@@ -36,6 +36,7 @@ export const useRaceView = () => {
     SubscribeRaceStatus({
       callback: (race: RaceDetail) => {
         raceDetail.value = race;
+        console.log(race);
       }
     })
     SubscribeError({
@@ -67,6 +68,12 @@ export const useRaceView = () => {
     SendPlayerChat(message);
   }
 
+  // computed props
+  const emptySlots = computed(() => {
+    if (!raceDetail.value) return 0
+    return raceDetail.value.maxPlayers - Object.keys(raceDetail.value.players).length
+  })
+
 
   return {
     raceDetail,
@@ -76,6 +83,7 @@ export const useRaceView = () => {
     handlePlayerReadyClick,
     joinRace,
     leaveRace,
-    checkGameReady
+    checkGameReady,
+    emptySlots
   };
 };

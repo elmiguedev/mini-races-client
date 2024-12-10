@@ -82,6 +82,7 @@ export class RaceSocketManager {
 
   private handleMessage(event: any) {
     const message = JSON.parse(event.data) as SocketMessage;
+    console.log(message);
     switch (message.key) {
       case SocketMessageKeys.PLAYER_CHAT:
         this.notifyPlayerChat(message.data);
