@@ -1,8 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, defineProps } from 'vue';
+import IconChat from '../../../../components/icons/IconChat.vue';
+import { useAuth } from '../../../../hooks/auth/useAuth';
+import ChatMessageBubble from './ChatMessageBubble.vue';
+import type { ChatMessage } from '../../../../core/domain/race/ChatMessage';
+
+const props = defineProps({
+  messages: Array<ChatMessage>,
+})
+
+const emit = defineEmits(["send"]);
+
+
+const { user } = useAuth();
 
 const showChat = ref(false);
-const messages = ref<string[]>([]);
 const newMessage = ref('');
 
 const toggleChat = () => {
@@ -10,8 +22,13 @@ const toggleChat = () => {
 }
 
 const sendMessage = () => {
-  messages.value.push(`${newMessage.value}`);
-  newMessage.value = '';
+  // messages.value.push({
+  //   name: user.name ?? 'User',
+  //   message: newMessage.value
+  // });
+  // newMessage.value = '';
+  emit("send", newMessage.value);
+  newMessage.value = "";
 }
 
 
@@ -20,7 +37,7 @@ const sendMessage = () => {
 <template>
   <div class="floating-chat-button">
     <button @click="toggleChat" class="btn btn-primary">
-      <i class="fas fa-comment"></i>
+      <IconChat class="w-6 h-6" />
     </button>
     <div v-if="showChat" class="card p-3 popover-chat">
 
@@ -32,13 +49,12 @@ const sendMessage = () => {
 
       <!-- messages -->
       <div class="flex flex-col">
-        <span class="badge bg-primary mr-auto mb-1 text-left" v-for="(message, index) in messages" :key="index">
-          {{ message }}
-        </span>
+        <ChatMessageBubble v-for="(message, index) in messages" :message="message" :owner="message.name === user?.name"
+          :key="index" />
       </div>
 
       <!-- input -->
-      <div class="">
+      <div class="mt-3">
         <input class="form-control" v-model="newMessage" type="text" placeholder="Escribe un mensaje..."
           @keydown.enter="sendMessage">
       </div>

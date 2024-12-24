@@ -1,8 +1,8 @@
 import { Scene } from "phaser";
 import type { RaceDetail } from "../../../core/domain/race/RaceDetail";
 import { PlayerEntity } from "../entities/PlayerEntity";
-import CarPng from "../../../assets/img/car.png";
-import MapPng from "../../../assets/img/map.png";
+import CarPng from "../../../assets/sprites/draft/car.png";
+import MapPng from "../../../assets/img/map2.png";
 import type { RaceHud } from "../hud/RaceHud";
 import { SendPlayerInRace } from "@/core/actions/race/SendPlayerInRace";
 import { SubscribeRaceStatus } from "@/core/actions/race/SubscribeRaceStatus";
@@ -10,6 +10,8 @@ import { SendPlayerMove } from "@/core/actions/race/SendPlayerMove";
 import { SendPlayerRunning } from "@/core/actions/race/SendPlayerRunning";
 import { GetSocketId } from "@/core/actions/race/GetSocketId";
 import type { Player } from "../../../core/domain/race/Player";
+
+const CAMERA_ZOOM = 0.8;
 
 export class StartScene extends Scene {
   private raceDetail!: RaceDetail;
@@ -91,6 +93,7 @@ export class StartScene extends Scene {
         if (player.socketId === GetSocketId()) {
           this.mainPlayer = this.players[player.socketId];
           this.mainPlayer.startFollow();
+          this.cameras.main.setZoom(CAMERA_ZOOM);
         }
       } else {
         if (this.players[player.socketId] === this.mainPlayer) {

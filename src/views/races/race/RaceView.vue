@@ -55,10 +55,6 @@ watch(raceDetail, () => {
       <Button @click="handlePlayerReadyClick" block>I'm ready</Button>
     </div>
 
-    <div v-if="!showGame">
-      <ChatBox :messages="chatMessages" @send="handleChatBoxMessage" />
-    </div>
-
-    <RaceChat />
+    <RaceChat :messages="chatMessages" @send="handleChatBoxMessage" />
   </div>
 </template>

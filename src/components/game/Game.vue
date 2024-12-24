@@ -9,8 +9,12 @@ const game = ref();
 onMounted(() => {
   game.value = new Phaser.Game({
     type: Phaser.AUTO,
-    width: 640,
-    height: 480,
+    scale: {
+      // mode: Phaser.Scale.FIT
+    },
+    // zoom: 0.5,
+    width: 800,
+    height: 600,
     parent: "game",
     backgroundColor: '#ffffff',
     render: {
@@ -36,8 +40,13 @@ onBeforeUnmount(() => {
   </div>
 </template>
 <style lang="css" scoped>
-canvas {
+/* canvas {
+  width: 100%;
+  height: 100%;
+} */
+
+/* #game {
   width: 640px;
   height: 480px;
-}
+} */
 </style>
